@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--
+			Created by JUAN DIAZ 2023
+
+			make it responsibe will be a great idea.
+	-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR code with Javascript</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    ></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="contenedor">
+      <form action="" id="formulario" class="formulario">
+        <input
+          type="text"
+          id="link"
+          placeholder="Type here, then generate the GR code"
+        />
+        <button class="btn">Generate QR</button>
+      </form>
+
+      <div id="contenedorQR" class="contenedorQR"></div>
+    </div>
+  </body>
+</html>

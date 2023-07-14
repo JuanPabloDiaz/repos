@@ -1,0 +1,10 @@
+body {
+  margin: 0;
+  background: #000;
+  height: fit-content;
+}
+/* Remote scrolling */
+body,
+html {
+  overflow-y: hidden;
+}
