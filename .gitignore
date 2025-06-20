@@ -1,0 +1,72 @@
+# Jekyll específico
+_site/
+.gems/
+.jekyll-cache/
+.sass-cache/
+.jekyll-metadata
+
+# Ruby/Bundler
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+/spec/fixtures/site/_site
+/spec/fixtures/site/Gemfile.lock
+*.gem
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/lib/jekyll-admin/public
+
+# Archivos de entorno y configuración
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos de IDE y editores
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación y temporales
+/dist/
+/build/
+/out/
+.cache/
+
+# Logs
+logs/
+*.log
+
+# Archivos grandes y binarios
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.pdf
+*.psd
+*.ai
+*.mov
+*.mp4
+*.mp3
+*.wav
+
+# Otros archivos específicos del proyecto
+# Añade aquí cualquier otro archivo o patrón que no quieras incluir en Git
