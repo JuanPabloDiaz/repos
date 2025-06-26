@@ -294,6 +294,8 @@ export default function Home() {
       <Head>
         <title>GitHub Portfolio</title>
         <meta name="description" content="My GitHub projects portfolio" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="theme-color" content="#0366d6" />
       </Head>
 
       <div className="content-container">
@@ -309,7 +311,7 @@ export default function Home() {
             </button>
           </div>
           <p>
-            A collection of my GitHub repositories{' '}
+            A collection of my public GitHub repositories{' '}
             <span className="project-count">({filteredRepos.length} projects)</span>
           </p>
         </header>
