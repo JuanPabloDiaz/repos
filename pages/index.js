@@ -338,11 +338,20 @@ export default function Home() {
             return (
               <div key={repo.id} className={`repo-card ${isFeatured ? 'featured' : ''}`}>
                 {isFeatured && <div className="featured-badge">Featured</div>}
-                <h3 className="repo-title">
-                  <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                    {repo.name}
-                  </a>
-                </h3>
+                <div className="repo-header">
+                  <h3 className="repo-title">
+                    <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                      {repo.name}
+                    </a>
+                  </h3>
+                  {repo.homepage && (
+                    <div className="repo-website">
+                      <a href={repo.homepage} target="_blank" rel="noopener noreferrer">
+                        <span className="website-icon">🌐</span> Demo
+                      </a>
+                    </div>
+                  )}
+                </div>
                 {repo.description && <p className="repo-description">{repo.description}</p>}
                 <div className="repo-meta">
                   {repo.language && <span className="language">{repo.language}</span>}
@@ -547,10 +556,18 @@ export default function Home() {
           border-bottom-left-radius: 8px;
         }
 
+        .repo-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 0.5rem;
+        }
+        
         .repo-title {
           margin-top: 0;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0;
           font-size: 1.2rem;
+          flex: 1;
         }
 
         .repo-title a {
@@ -560,6 +577,39 @@ export default function Home() {
 
         .repo-title a:hover {
           text-decoration: underline;
+        }
+        
+        .repo-website {
+          margin-left: 0.5rem;
+        }
+        
+        .repo-website a {
+          display: inline-flex;
+          align-items: center;
+          color: #0366d6;
+          text-decoration: none;
+          font-size: 0.85rem;
+          padding: 0.25rem 0.5rem;
+          transition: all 0.2s ease;
+        }
+        
+        .dark-mode .repo-website a {
+          border-color: #333;
+        }
+        
+        .repo-website a:hover {
+          background-color: #f6f8fa;
+          text-decoration: none;
+          border-color: #0366d6;
+        }
+        
+        .dark-mode .repo-website a:hover {
+          background-color: #1f2937;
+          border-color: #58a6ff;
+        }
+        
+        .website-icon {
+          margin-right: 0.25rem;
         }
 
         .repo-description {
