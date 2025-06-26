@@ -5,6 +5,8 @@ import Head from 'next/head';
 const GITHUB_USERNAME = 'juanpablodiaz';
 // Add projects to hide from the portfolio
 const HIDDEN_PROJECTS = ['unlighthouse', 'googleClone', 'n8n-backup'];
+// Featured projects to show at the top (in order of appearance)
+const FEATURED_PROJECTS = ['colombia', '3D', 'jpdiaz', 'fit'];
 
 export default function Home() {
   const [repos, setRepos] = useState([]);
@@ -12,7 +14,7 @@ export default function Home() {
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const technologies = ['React', 'Next.js', 'Jekyll', 'HTML', 'Astro', 'TypeScript', 'TailwindCSS'];
+  const technologies = ['React', 'Next.js', 'Jekyll', 'HTML', 'JavaScript', 'Astro', 'TypeScript', 'TailwindCSS', 'CSS'];
 
   useEffect(() => {
     fetchRepos();
@@ -24,22 +26,96 @@ export default function Home() {
 
   const fetchRepos = async () => {
     try {
-      const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
-      const data = await response.json();
+      setLoading(true);
+      let allRepos = [];
+      let page = 1;
+      let hasMorePages = true;
+      
+      // Fetch all pages of repositories
+      while (hasMorePages && page <= 10) { // Limit to 10 pages to prevent infinite loops
+        console.log(`Fetching page ${page}...`);
+        
+        // Use a timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        const response = await fetch(
+          `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&page=${page}&timestamp=${timestamp}`,
+          {
+            headers: {
+              'Accept': 'application/vnd.github.v3+json'
+            }
+          }
+        );
+        
+        // Check for rate limiting or other API issues
+        if (!response.ok) {
+          console.error(`GitHub API error: ${response.status}`);
+          console.error(await response.text());
+          break;
+        }
+        
+        const data = await response.json();
+        console.log(`Page ${page} returned ${data.length} repositories`);
+        
+        if (data.length === 0) {
+          hasMorePages = false;
+        } else {
+          allRepos = [...allRepos, ...data];
+          page++;
+        }
+      }
+      
+      console.log(`Total repositories fetched: ${allRepos.length}`);
+      
+      // Log some sample data to verify what we're getting
+      if (allRepos.length > 0) {
+        console.log('Sample repository data:', allRepos[0]);
+      }
+      
+      // Count different types of repos for debugging
+      const forkedRepos = allRepos.filter(repo => repo.fork).length;
+      const privateRepos = allRepos.filter(repo => repo.private).length;
+      const hiddenRepos = allRepos.filter(repo => HIDDEN_PROJECTS.includes(repo.name)).length;
+      
+      console.log(`Repositories breakdown:`);
+      console.log(`- Total: ${allRepos.length}`);
+      console.log(`- Forked: ${forkedRepos}`);
+      console.log(`- Private: ${privateRepos}`);
+      console.log(`- Hidden: ${hiddenRepos}`);
       
       // Filter out forks, private repos, and hidden projects
-      const filteredRepos = data.filter(repo => 
+      const filteredRepos = allRepos.filter(repo => 
         !repo.fork && 
         !repo.private && 
         !HIDDEN_PROJECTS.includes(repo.name)
       );
       
-      // Sort repos by creation date (newest first)
-      const sortedRepos = filteredRepos.sort((a, b) => {
+      console.log(`After filtering: ${filteredRepos.length} repositories remain`);
+      
+      // First sort by creation date (newest first)
+      const dateRepos = filteredRepos.sort((a, b) => {
         return new Date(b.created_at) - new Date(a.created_at);
       });
       
+      // Then prioritize featured projects
+      const sortedRepos = dateRepos.sort((a, b) => {
+        // If a is featured but b is not, a comes first
+        if (FEATURED_PROJECTS.includes(a.name) && !FEATURED_PROJECTS.includes(b.name)) {
+          return -1;
+        }
+        // If b is featured but a is not, b comes first
+        if (!FEATURED_PROJECTS.includes(a.name) && FEATURED_PROJECTS.includes(b.name)) {
+          return 1;
+        }
+        // If both are featured, sort by their position in the FEATURED_PROJECTS array
+        if (FEATURED_PROJECTS.includes(a.name) && FEATURED_PROJECTS.includes(b.name)) {
+          return FEATURED_PROJECTS.indexOf(a.name) - FEATURED_PROJECTS.indexOf(b.name);
+        }
+        // Otherwise maintain the date sort order
+        return 0;
+      });
+      
       setRepos(sortedRepos);
+      console.log(`Final repositories displayed: ${sortedRepos.length}`);
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
@@ -70,6 +146,10 @@ export default function Home() {
     if (language === 'html' || topics.includes('html') || description.includes('html')) {
       detectedTechs.push('HTML');
     }
+
+    if (language === 'javascript' || topics.includes('javascript') || name.includes('javascript') || description.includes('javascript')) {
+      detectedTechs.push('JavaScript');
+    }
     
     if (language === 'astro' || topics.includes('astro') || name.includes('astro') || description.includes('astro')) {
       detectedTechs.push('Astro');
@@ -81,6 +161,10 @@ export default function Home() {
 
     if (language === 'tailwindcss' || topics.includes('tailwindcss') || name.includes('tailwindcss') || description.includes('tailwindcss')) {
       detectedTechs.push('TailwindCSS');
+    }
+
+    if (language === 'css' || topics.includes('css') || name.includes('css') || description.includes('css')) {
+      detectedTechs.push('CSS');
     }
 
     return detectedTechs;
@@ -141,7 +225,7 @@ export default function Home() {
       </Head>
 
       <header className="header">
-        <h1>My Projects</h1>
+        <h1>Juan Diaz's Projects</h1>
         <p>A collection of my GitHub repositories <span className="project-count">({filteredRepos.length} projects)</span></p>
       </header>
 
@@ -168,8 +252,10 @@ export default function Home() {
       <div className="repos-grid">
         {filteredRepos.map(repo => {
           const techs = detectTechnology(repo);
+          const isFeatured = FEATURED_PROJECTS.includes(repo.name);
           return (
-            <div key={repo.id} className="repo-card">
+            <div key={repo.id} className={`repo-card ${isFeatured ? 'featured' : ''}`}>
+              {isFeatured && <div className="featured-badge">Featured</div>}
               <h3 className="repo-title">
                 <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
                   {repo.name}
@@ -297,11 +383,35 @@ export default function Home() {
           padding: 1.5rem;
           background: white;
           transition: transform 0.2s ease, box-shadow 0.2s ease;
+          position: relative;
+          overflow: hidden;
         }
 
         .repo-card:hover {
           transform: translateY(-2px);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .repo-card.featured {
+          border-color: #0366d6;
+          box-shadow: 0 2px 8px rgba(3, 102, 214, 0.2);
+        }
+        
+        .repo-card.featured:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 5px 15px rgba(3, 102, 214, 0.3);
+        }
+        
+        .featured-badge {
+          position: absolute;
+          top: 0;
+          right: 0;
+          background: #0366d6;
+          color: white;
+          font-size: 0.7rem;
+          padding: 0.2rem 0.6rem;
+          border-bottom-left-radius: 6px;
+          font-weight: 500;
         }
 
         .repo-title {
