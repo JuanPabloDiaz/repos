@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 
@@ -243,105 +242,115 @@ export default function Home() {
   }
 
   return (
-    <div className={`container ${darkMode ? 'dark-mode' : ''}`}>
+    <div className={`page-wrapper ${darkMode ? 'dark-mode' : ''}`}>
       <Head>
         <title>GitHub Portfolio</title>
         <meta name="description" content="My GitHub projects portfolio" />
       </Head>
 
-      <header className="header">
-        <div className="header-top">
-          <h1>Juan Diaz's Projects</h1>
-          <button 
-            className={`theme-toggle ${darkMode ? 'dark' : 'light'}`} 
-            onClick={() => setDarkMode(!darkMode)}
-            aria-label="Toggle dark mode"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
-        </div>
-        <p>A collection of my GitHub repositories <span className="project-count">({filteredRepos.length} projects)</span></p>
-      </header>
+      <div className="content-container">
+        <header className="header">
+          <div className="header-top">
+            <h1>Juan Diaz's Projects</h1>
+            <button 
+              className={`theme-toggle ${darkMode ? 'dark' : 'light'}`} 
+              onClick={() => setDarkMode(!darkMode)}
+              aria-label="Toggle dark mode"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+          </div>
+          <p>A collection of my GitHub repositories <span className="project-count">({filteredRepos.length} projects)</span></p>
+        </header>
 
-      <div className="filters">
-        {technologies.map(tech => (
-          <button
-            key={tech}
-            className={`filter-btn ${selectedTechs.includes(tech) ? 'active' : ''}`}
-            onClick={() => toggleTechnology(tech)}
-          >
-            {tech}
-          </button>
-        ))}
-        {selectedTechs.length > 0 && (
-          <button 
-            className="clear-btn"
-            onClick={() => setSelectedTechs([])}
-          >
-            Clear All
-          </button>
+        <div className="filters">
+          {technologies.map(tech => (
+            <button
+              key={tech}
+              className={`filter-btn ${selectedTechs.includes(tech) ? 'active' : ''}`}
+              onClick={() => toggleTechnology(tech)}
+            >
+              {tech}
+            </button>
+          ))}
+          {selectedTechs.length > 0 && (
+            <button 
+              className="clear-btn"
+              onClick={() => setSelectedTechs([])}
+            >
+              Clear All
+            </button>
+          )}
+        </div>
+
+        <div className="repos-grid">
+          {filteredRepos.map(repo => {
+            const techs = detectTechnology(repo);
+            const isFeatured = FEATURED_PROJECTS.includes(repo.name);
+            return (
+              <div key={repo.id} className={`repo-card ${isFeatured ? 'featured' : ''}`}>
+                {isFeatured && <div className="featured-badge">Featured</div>}
+                <h3 className="repo-title">
+                  <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
+                    {repo.name}
+                  </a>
+                </h3>
+                {repo.description && (
+                  <p className="repo-description">{repo.description}</p>
+                )}
+                <div className="repo-meta">
+                  {repo.language && (
+                    <span className="language">{repo.language}</span>
+                  )}
+                  {techs.length > 0 && (
+                    <div className="tech-tags">
+                      {techs.map(tech => (
+                        <span key={tech} className="tech-tag">{tech}</span>
+                      ))}
+                    </div>
+                  )}
+                  <span className="stars">⭐ {repo.stargazers_count}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {filteredRepos.length === 0 && (
+          <div className="no-results">
+            No repositories found matching the selected technologies.
+          </div>
         )}
       </div>
-
-      <div className="repos-grid">
-        {filteredRepos.map(repo => {
-          const techs = detectTechnology(repo);
-          const isFeatured = FEATURED_PROJECTS.includes(repo.name);
-          return (
-            <div key={repo.id} className={`repo-card ${isFeatured ? 'featured' : ''}`}>
-              {isFeatured && <div className="featured-badge">Featured</div>}
-              <h3 className="repo-title">
-                <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                  {repo.name}
-                </a>
-              </h3>
-              {repo.description && (
-                <p className="repo-description">{repo.description}</p>
-              )}
-              <div className="repo-meta">
-                {repo.language && (
-                  <span className="language">{repo.language}</span>
-                )}
-                {techs.length > 0 && (
-                  <div className="tech-tags">
-                    {techs.map(tech => (
-                      <span key={tech} className="tech-tag">{tech}</span>
-                    ))}
-                  </div>
-                )}
-                <span className="stars">⭐ {repo.stargazers_count}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {filteredRepos.length === 0 && (
-        <div className="no-results">
-          No repositories found matching the selected technologies.
-        </div>
-      )}
-
+      
       <footer className="footer">
-        Developed by <a href="https://www.linkedin.com/in/1diazdev/" target="_blank" rel="noopener noreferrer">
-          Juan Diaz
+        <a href="https://www.linkedin.com/in/1diazdev/" target="_blank" rel="noopener noreferrer">
+          Developed by Juan Diaz
         </a>
       </footer>
 
       <style jsx>{`
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 2rem;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          line-height: 1.6;
+        .page-wrapper {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
           color: #333;
           transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        .container.dark-mode {
+        .page-wrapper.dark-mode {
           color: #e1e5e9;
           background-color: #121212;
+        }
+        
+        .content-container {
+          max-width: 1200px;
+          width: 100%;
+          margin: 0 auto;
+          padding: 2rem;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          line-height: 1.6;
+          flex: 1;
         }
 
         .header {
@@ -370,16 +379,6 @@ export default function Home() {
           border: none;
           font-size: 1.5rem;
           cursor: pointer;
-          padding: 0.5rem;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.3s ease;
-        }
-        
-        .theme-toggle:hover {
-          transform: rotate(15deg);
         }
 
         .header p {
@@ -417,6 +416,18 @@ export default function Home() {
           border-color: #444;
           color: #e1e5e9;
         }
+        
+        .dark-mode .filter-btn:hover {
+          border-color: #58a6ff;
+          box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.4);
+        }
+        
+        .dark-mode .filter-btn.active {
+          background: #1f6feb;
+          color: white;
+          border-color: #58a6ff;
+          box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.4);
+        }
 
         .filter-btn:hover {
           border-color: #0366d6;
@@ -430,24 +441,19 @@ export default function Home() {
 
         .clear-btn {
           padding: 0.5rem 1rem;
-          border: 2px solid #d73a49;
-          background: white;
-          color: #d73a49;
+          border: none;
+          background: #f1f1f1;
           border-radius: 20px;
           cursor: pointer;
-          transition: all 0.2s ease;
           font-size: 0.9rem;
-        }
-
-        .clear-btn:hover {
-          background: #d73a49;
-          color: white;
+          color: #666;
         }
 
         .repos-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
           gap: 1.5rem;
+          margin-bottom: 2rem;
         }
 
         .repo-card {
@@ -466,34 +472,29 @@ export default function Home() {
         }
 
         .repo-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
-        
+
         .repo-card.featured {
           border-color: #0366d6;
-          box-shadow: 0 2px 8px rgba(3, 102, 214, 0.2);
+          border-width: 2px;
         }
-        
-        .repo-card.featured:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 5px 15px rgba(3, 102, 214, 0.3);
-        }
-        
+
         .featured-badge {
           position: absolute;
           top: 0;
           right: 0;
           background: #0366d6;
           color: white;
+          padding: 0.2rem 0.5rem;
           font-size: 0.7rem;
-          padding: 0.2rem 0.6rem;
-          border-bottom-left-radius: 6px;
-          font-weight: 500;
+          border-bottom-left-radius: 8px;
         }
 
         .repo-title {
-          margin: 0 0 0.5rem 0;
+          margin-top: 0;
+          margin-bottom: 0.5rem;
           font-size: 1.2rem;
         }
 
@@ -507,8 +508,8 @@ export default function Home() {
         }
 
         .repo-description {
+          margin: 0.5rem 0 1rem;
           color: #586069;
-          margin: 0 0 1rem 0;
           font-size: 0.9rem;
         }
         
@@ -520,12 +521,13 @@ export default function Home() {
           display: flex;
           align-items: center;
           gap: 1rem;
-          flex-wrap: wrap;
           font-size: 0.8rem;
+          color: #586069;
+          margin-top: auto;
         }
 
         .language {
-          color: #586069;
+          display: inline-block;
         }
 
         .tech-tags {
@@ -560,11 +562,12 @@ export default function Home() {
         }
 
         .footer {
-          margin-top: 3rem;
           padding: 1rem 0;
           text-align: center;
           border-top: 1px solid #e1e5e9;
           transition: border-color 0.3s ease;
+          width: 100%;
+          margin-top: auto;
         }
         
         .dark-mode .footer {
@@ -583,7 +586,7 @@ export default function Home() {
         }
 
         @media (max-width: 768px) {
-          .container {
+          .content-container {
             padding: 1rem;
           }
 
