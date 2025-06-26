@@ -68,6 +68,9 @@ You can customize the portfolio by modifying the following variables in `pages/i
 - `npm run clean`: Clean build directories and reinstall dependencies
 - `npm run format`: Format code with Prettier
 - `npm run format:check`: Check code formatting without making changes
+- `npm run test`: Run all tests
+- `npm run test:watch`: Run tests in watch mode
+- `npm run test:coverage`: Run tests with coverage report
 
 ## Deployment
 

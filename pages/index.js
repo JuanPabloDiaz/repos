@@ -268,7 +268,7 @@ export default function Home() {
     return (
       <div className="container">
         <Head>
-          <title>GitHub Portfolio</title>
+          <title>GitHub Portfolio | Juan Diaz</title>
           <meta name="description" content="My GitHub projects portfolio" />
         </Head>
         <div className="loading">Loading repositories...</div>
@@ -292,7 +292,7 @@ export default function Home() {
   return (
     <div className={`page-wrapper ${darkMode ? 'dark-mode' : ''}`}>
       <Head>
-        <title>GitHub Portfolio</title>
+        <title>GitHub Portfolio | Juan Diaz</title>
         <meta name="description" content="My GitHub projects portfolio" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="theme-color" content="#0366d6" />
@@ -356,16 +356,18 @@ export default function Home() {
                 </div>
                 {repo.description && <p className="repo-description">{repo.description}</p>}
                 <div className="repo-meta">
-                  {repo.language && <span className="language">{repo.language}</span>}
-                  {techs.length > 0 && (
-                    <div className="tech-tags">
-                      {techs.map(tech => (
-                        <span key={tech} className="tech-tag">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                  <div className="repo-meta-left">
+                    {repo.language && <span className="language">{repo.language}</span>}
+                    {techs.length > 0 && (
+                      <div className="tech-tags">
+                        {techs.map(tech => (
+                          <span key={tech} className="tech-tag">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   {repo.stargazers_count > 0 && (
                     <span className="stars">⭐ {repo.stargazers_count}</span>
                   )}
@@ -627,10 +629,18 @@ export default function Home() {
         .repo-meta {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          justify-content: space-between;
           font-size: 0.8rem;
           color: #586069;
           margin-top: auto;
+        }
+        
+        .repo-meta-left {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+          flex: 1;
         }
 
         .language {
@@ -658,7 +668,8 @@ export default function Home() {
 
         .stars {
           color: #586069;
-          margin-left: auto;
+          white-space: nowrap;
+          padding-left: 0.5rem;
         }
 
         .no-results {
