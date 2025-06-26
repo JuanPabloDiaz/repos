@@ -454,14 +454,14 @@ export default function Home() {
           border: 1px solid #e1e5e9;
           border-radius: 8px;
           padding: 1.5rem;
-          background: white;
+          background-color: white !important;
           transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
           position: relative;
           overflow: hidden;
         }
         
         .dark-mode .repo-card {
-          background: #1e1e1e;
+          background-color: #1e1e1e !important;
           border-color: #333;
         }
 
