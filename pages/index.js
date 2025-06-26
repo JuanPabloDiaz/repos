@@ -13,16 +13,41 @@ export default function Home() {
   const [filteredRepos, setFilteredRepos] = useState([]);
   const [selectedTechs, setSelectedTechs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const technologies = ['React', 'Next.js', 'Jekyll', 'HTML', 'JavaScript', 'Astro', 'TypeScript', 'TailwindCSS', 'CSS'];
 
   useEffect(() => {
     fetchRepos();
+    
+    // Check for user preference in localStorage or system preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark-mode');
+    } else if (savedTheme === 'light') {
+      setDarkMode(false);
+      document.documentElement.classList.remove('dark-mode');
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark-mode');
+    }
   }, []);
 
   useEffect(() => {
     filterRepos();
   }, [repos, selectedTechs]);
+  
+  // Effect to handle dark mode changes
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
 
   const fetchRepos = async () => {
     try {
@@ -218,14 +243,23 @@ export default function Home() {
   }
 
   return (
-    <div className="container">
+    <div className={`container ${darkMode ? 'dark-mode' : ''}`}>
       <Head>
         <title>GitHub Portfolio</title>
         <meta name="description" content="My GitHub projects portfolio" />
       </Head>
 
       <header className="header">
-        <h1>Juan Diaz's Projects</h1>
+        <div className="header-top">
+          <h1>Juan Diaz's Projects</h1>
+          <button 
+            className={`theme-toggle ${darkMode ? 'dark' : 'light'}`} 
+            onClick={() => setDarkMode(!darkMode)}
+            aria-label="Toggle dark mode"
+          >
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+        </div>
         <p>A collection of my GitHub repositories <span className="project-count">({filteredRepos.length} projects)</span></p>
       </header>
 
@@ -302,17 +336,50 @@ export default function Home() {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           line-height: 1.6;
           color: #333;
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .container.dark-mode {
+          color: #e1e5e9;
+          background-color: #121212;
         }
 
         .header {
           text-align: center;
           margin-bottom: 3rem;
         }
+        
+        .header-top {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          margin-bottom: 0.5rem;
+        }
 
         .header h1 {
           font-size: 2.5rem;
-          margin: 0 0 0.5rem 0;
+          margin: 0;
           font-weight: 600;
+        }
+        
+        .theme-toggle {
+          position: absolute;
+          right: 0;
+          background: transparent;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+          transform: rotate(15deg);
         }
 
         .header p {
@@ -343,6 +410,12 @@ export default function Home() {
           cursor: pointer;
           transition: all 0.2s ease;
           font-size: 0.9rem;
+        }
+        
+        .dark-mode .filter-btn {
+          background: #2d2d2d;
+          border-color: #444;
+          color: #e1e5e9;
         }
 
         .filter-btn:hover {
@@ -382,9 +455,14 @@ export default function Home() {
           border-radius: 8px;
           padding: 1.5rem;
           background: white;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
           position: relative;
           overflow: hidden;
+        }
+        
+        .dark-mode .repo-card {
+          background: #1e1e1e;
+          border-color: #333;
         }
 
         .repo-card:hover {
@@ -433,6 +511,10 @@ export default function Home() {
           margin: 0 0 1rem 0;
           font-size: 0.9rem;
         }
+        
+        .dark-mode .repo-description {
+          color: #a0a0a0;
+        }
 
         .repo-meta {
           display: flex;
@@ -459,6 +541,11 @@ export default function Home() {
           border-radius: 12px;
           font-size: 0.7rem;
         }
+        
+        .dark-mode .tech-tag {
+          background: #182635;
+          color: #58a6ff;
+        }
 
         .stars {
           color: #586069;
@@ -477,6 +564,11 @@ export default function Home() {
           padding: 1rem 0;
           text-align: center;
           border-top: 1px solid #e1e5e9;
+          transition: border-color 0.3s ease;
+        }
+        
+        .dark-mode .footer {
+          border-color: #333;
         }
 
         .footer a {
