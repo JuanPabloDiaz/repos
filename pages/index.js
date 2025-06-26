@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 
 const GITHUB_USERNAME = 'juanpablodiaz';
+// Add projects to hide from the portfolio
+const HIDDEN_PROJECTS = ['unlighthouse', 'googleClone', 'n8n-backup'];
 
 export default function Home() {
   const [repos, setRepos] = useState([]);
@@ -22,12 +24,22 @@ export default function Home() {
 
   const fetchRepos = async () => {
     try {
-      const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`);
+      const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100`);
       const data = await response.json();
       
-      // Filter out forks and get only public repos
-      const publicRepos = data.filter(repo => !repo.fork && !repo.private);
-      setRepos(publicRepos);
+      // Filter out forks, private repos, and hidden projects
+      const filteredRepos = data.filter(repo => 
+        !repo.fork && 
+        !repo.private && 
+        !HIDDEN_PROJECTS.includes(repo.name)
+      );
+      
+      // Sort repos by creation date (newest first)
+      const sortedRepos = filteredRepos.sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      
+      setRepos(sortedRepos);
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
@@ -130,7 +142,7 @@ export default function Home() {
 
       <header className="header">
         <h1>My Projects</h1>
-        <p>A collection of my GitHub repositories</p>
+        <p>A collection of my GitHub repositories <span className="project-count">({filteredRepos.length} projects)</span></p>
       </header>
 
       <div className="filters">
@@ -190,6 +202,12 @@ export default function Home() {
         </div>
       )}
 
+      <footer className="footer">
+        Developed by <a href="https://www.linkedin.com/in/1diazdev/" target="_blank" rel="noopener noreferrer">
+          Juan Diaz
+        </a>
+      </footer>
+
       <style jsx>{`
         .container {
           max-width: 1200px;
@@ -215,6 +233,12 @@ export default function Home() {
           font-size: 1.1rem;
           color: #666;
           margin: 0;
+        }
+        
+        .project-count {
+          font-size: 0.9rem;
+          color: #0366d6;
+          font-weight: 500;
         }
 
         .filters {
@@ -336,6 +360,24 @@ export default function Home() {
           padding: 3rem;
           color: #586069;
           font-style: italic;
+        }
+
+        .footer {
+          margin-top: 3rem;
+          padding: 1rem 0;
+          text-align: center;
+          border-top: 1px solid #e1e5e9;
+        }
+
+        .footer a {
+          color: #0366d6;
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+          text-decoration: underline;
         }
 
         @media (max-width: 768px) {
