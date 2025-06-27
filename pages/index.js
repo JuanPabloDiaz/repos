@@ -4,8 +4,8 @@ import Head from 'next/head';
 const GITHUB_USERNAME = 'juanpablodiaz';
 // Add projects to hide from the portfolio
 const HIDDEN_PROJECTS = ['unlighthouse', 'googleClone', 'n8n-backup'];
-// Featured projects to show at the top (in order of appearance)
-const FEATURED_PROJECTS = ['colombia', '3D', 'jpdiaz', 'fit'];
+// Best projects to show at the top (in order of appearance)
+const BEST_PROJECTS = ['countryHub', 'futurama','colombia', 'fit', '3D' ];
 
 export default function Home() {
   const [repos, setRepos] = useState([]);
@@ -129,19 +129,19 @@ export default function Home() {
         return new Date(b.created_at) - new Date(a.created_at);
       });
 
-      // Then prioritize featured projects
+      // Then prioritize best projects
       const sortedRepos = dateRepos.sort((a, b) => {
-        // If a is featured but b is not, a comes first
-        if (FEATURED_PROJECTS.includes(a.name) && !FEATURED_PROJECTS.includes(b.name)) {
+        // If a is best but b is not, a comes first
+        if (BEST_PROJECTS.includes(a.name) && !BEST_PROJECTS.includes(b.name)) {
           return -1;
         }
-        // If b is featured but a is not, b comes first
-        if (!FEATURED_PROJECTS.includes(a.name) && FEATURED_PROJECTS.includes(b.name)) {
+        // If b is best but a is not, b comes first
+        if (!BEST_PROJECTS.includes(a.name) && BEST_PROJECTS.includes(b.name)) {
           return 1;
         }
-        // If both are featured, sort by their position in the FEATURED_PROJECTS array
-        if (FEATURED_PROJECTS.includes(a.name) && FEATURED_PROJECTS.includes(b.name)) {
-          return FEATURED_PROJECTS.indexOf(a.name) - FEATURED_PROJECTS.indexOf(b.name);
+        // If both are best, sort by their position in the BEST_PROJECTS array
+        if (BEST_PROJECTS.includes(a.name) && BEST_PROJECTS.includes(b.name)) {
+          return BEST_PROJECTS.indexOf(a.name) - BEST_PROJECTS.indexOf(b.name);
         }
         // Otherwise maintain the date sort order
         return 0;
@@ -336,10 +336,10 @@ export default function Home() {
         <div className="repos-grid">
           {filteredRepos.map(repo => {
             const techs = detectTechnology(repo);
-            const isFeatured = FEATURED_PROJECTS.includes(repo.name);
+            const isBest = BEST_PROJECTS.includes(repo.name);
             return (
-              <div key={repo.id} className={`repo-card ${isFeatured ? 'featured' : ''}`}>
-                {isFeatured && <div className="featured-badge">Featured</div>}
+              <div key={repo.id} className={`repo-card ${isBest ? 'best' : ''}`}>
+                {isBest && <div className="best-badge">New</div>}
                 <div className="repo-header">
                   <h3 className="repo-title">
                     <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
@@ -544,12 +544,12 @@ export default function Home() {
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .repo-card.featured {
+        .repo-card.best {
           border-color: #0366d6;
           border-width: 2px;
         }
 
-        .featured-badge {
+        .best-badge {
           position: absolute;
           top: 0;
           right: 0;

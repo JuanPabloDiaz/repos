@@ -6,7 +6,7 @@ A clean, modern portfolio that showcases my GitHub repositories with filtering c
 
 - **GitHub API Integration**: Automatically fetches and displays repositories from GitHub
 - **Project Filtering**: Filter projects by technology (React, Next.js, Jekyll, etc.)
-- **Featured Projects**: Highlight important projects at the top of the list
+- **Best Projects**: Highlight important projects at the top of the list
 - **Responsive Design**: Works on desktop and mobile devices
 - **Dark Mode**: Toggle between light and dark themes with automatic system preference detection
 - **Live Demo Links**: Direct links to deployed project demos
@@ -57,7 +57,7 @@ You can customize the portfolio by modifying the following variables in `pages/i
 
 - `GITHUB_USERNAME`: Your GitHub username
 - `HIDDEN_PROJECTS`: Array of repository names to hide from the portfolio
-- `FEATURED_PROJECTS`: Array of repository names to feature at the top (in order of appearance)
+- `BEST_PROJECTS`: Array of repository names to feature at the top (in order of appearance)
 
 ## Scripts
 
