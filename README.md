@@ -30,12 +30,14 @@ A clean, modern portfolio that showcases my GitHub repositories with filtering c
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/juanpablodiaz/repos.git
    cd repos
    ```
 
 2. Install dependencies
+
    ```bash
    npm install
    # or
@@ -43,6 +45,7 @@ A clean, modern portfolio that showcases my GitHub repositories with filtering c
    ```
 
 3. Run the development server
+
    ```bash
    npm run dev
    # or

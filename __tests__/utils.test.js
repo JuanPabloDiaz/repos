@@ -1,5 +1,5 @@
 // Mock function for detectTechnology since it's inside the Home component
-const detectTechnology = (repo) => {
+const detectTechnology = repo => {
   const technologies = [];
   const techKeywords = {
     react: 'React',
@@ -73,13 +73,12 @@ const detectTechnology = (repo) => {
 };
 
 describe('Technology detection', () => {
-
   it('detects React technology from topics', () => {
     const repo = {
       topics: ['react', 'javascript'],
       name: 'test-repo',
     };
-    
+
     const technologies = detectTechnology(repo);
     expect(technologies).toContain('React');
   });
@@ -89,7 +88,7 @@ describe('Technology detection', () => {
       topics: ['nextjs', 'react'],
       name: 'test-repo',
     };
-    
+
     const technologies = detectTechnology(repo);
     expect(technologies).toContain('Next.js');
   });
@@ -99,7 +98,7 @@ describe('Technology detection', () => {
       topics: [],
       name: 'react-project',
     };
-    
+
     const technologies = detectTechnology(repo);
     expect(technologies).toContain('React');
   });
@@ -109,7 +108,7 @@ describe('Technology detection', () => {
       topics: ['react', 'typescript', 'nextjs'],
       name: 'test-repo',
     };
-    
+
     const technologies = detectTechnology(repo);
     expect(technologies).toContain('React');
     expect(technologies).toContain('TypeScript');
@@ -121,7 +120,7 @@ describe('Technology detection', () => {
       topics: ['unknown-tech'],
       name: 'test-repo',
     };
-    
+
     const technologies = detectTechnology(repo);
     expect(technologies).toEqual([]);
   });

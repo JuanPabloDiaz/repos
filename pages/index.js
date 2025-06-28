@@ -5,7 +5,7 @@ const GITHUB_USERNAME = 'juanpablodiaz';
 // Add projects to hide from the portfolio
 const HIDDEN_PROJECTS = ['unlighthouse', 'googleClone', 'n8n-backup'];
 // Best projects to show at the top (in order of appearance)
-const BEST_PROJECTS = ['countryHub', 'futurama','colombia', 'fit', '3D' ];
+const BEST_PROJECTS = ['countryHub', 'futurama', 'colombia', 'fit', '3D'];
 
 export default function Home() {
   const [repos, setRepos] = useState([]);
@@ -296,6 +296,25 @@ export default function Home() {
         <meta name="description" content="My GitHub projects portfolio" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="theme-color" content="#0366d6" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="Juan Diaz" />
+        <meta name="keywords" content="GitHub, portfolio, Juan Diaz, projects, repositories" />
+        <meta property="og:title" content="Juan Diaz's GitHub Portfolio" />
+        <meta property="og:description" content="A collection of my public GitHub repositories" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content="https://repos.jpdiaz.dev" />
+        <link rel="canonical" href="https://repos.jpdiaz.dev" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-3J144HJG1Y"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-3J144HJG1Y');
+            `,
+          }}
+        />
       </Head>
 
       <div className="content-container">
@@ -566,7 +585,7 @@ export default function Home() {
           align-items: flex-start;
           margin-bottom: 0.5rem;
         }
-        
+
         .repo-title {
           margin-top: 0;
           margin-bottom: 0;
@@ -582,11 +601,11 @@ export default function Home() {
         .repo-title a:hover {
           text-decoration: underline;
         }
-        
+
         .repo-website {
           margin-left: 0.5rem;
         }
-        
+
         .repo-website a {
           display: inline-flex;
           align-items: center;
@@ -596,22 +615,22 @@ export default function Home() {
           padding: 0.25rem 0.5rem;
           transition: all 0.2s ease;
         }
-        
+
         .dark-mode .repo-website a {
           border-color: #333;
         }
-        
+
         .repo-website a:hover {
           background-color: #f6f8fa;
           text-decoration: none;
           border-color: #0366d6;
         }
-        
+
         .dark-mode .repo-website a:hover {
           background-color: #1f2937;
           border-color: #58a6ff;
         }
-        
+
         .website-icon {
           margin-right: 0.25rem;
         }
@@ -634,7 +653,7 @@ export default function Home() {
           color: #586069;
           margin-top: auto;
         }
-        
+
         .repo-meta-left {
           display: flex;
           align-items: center;
