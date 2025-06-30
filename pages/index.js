@@ -5,7 +5,7 @@ const GITHUB_USERNAME = 'juanpablodiaz';
 // Add projects to hide from the portfolio
 const HIDDEN_PROJECTS = ['unlighthouse', 'googleClone', 'n8n-backup'];
 // Best projects to show at the top (in order of appearance)
-const BEST_PROJECTS = ['countryHub', 'futurama', 'colombia', 'fit', '3D'];
+const BEST_PROJECTS = ['countryHub', 'futurama', 'colombia', 'fit', 'favorite'];
 
 export default function Home() {
   const [repos, setRepos] = useState([]);
@@ -241,8 +241,15 @@ export default function Home() {
     if (
       language === 'tailwindcss' ||
       topics.includes('tailwindcss') ||
+      topics.includes('tailwind') ||
+      topics.includes('tailwind-css') ||
       name.includes('tailwindcss') ||
-      description.includes('tailwindcss')
+      name.includes('tailwind') ||
+      name.includes('tailwind-css') ||
+      description.includes('tailwindcss') ||
+      description.includes('tailwind css') ||
+      description.includes('tailwind-css') ||
+      description.includes('tailwind')
     ) {
       detectedTechs.push('TailwindCSS');
     }
