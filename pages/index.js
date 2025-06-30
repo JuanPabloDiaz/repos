@@ -18,11 +18,12 @@ export default function Home() {
     'React',
     'Next.js',
     'Jekyll',
-    'HTML',
     'JavaScript',
+    'AWS',
     'Astro',
     'TypeScript',
     'TailwindCSS',
+    'HTML',
     'CSS',
   ];
 
@@ -215,6 +216,19 @@ export default function Home() {
     }
 
     if (
+      language === 'aws' ||
+      topics.includes('aws') ||
+      topics.includes('amplify') ||
+      topics.includes('aws-amplify') ||
+      name.includes('aws') ||
+      name.includes('amplify') ||
+      description.includes('aws') ||
+      description.includes('amplify')
+    ) {
+      detectedTechs.push('AWS');
+    }
+
+    if (
       language === 'typescript' ||
       topics.includes('typescript') ||
       name.includes('typescript') ||
@@ -326,7 +340,34 @@ export default function Home() {
               onClick={() => setDarkMode(!darkMode)}
               aria-label="Toggle dark mode"
             >
-              {darkMode ? '☀️' : '🌙'}
+              {darkMode ? (
+                // ☀️
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    fillRule="evenodd"
+                    d="M277.333 405.333v85.333h-42.667v-85.333zm99.346-58.824l60.34 60.34l-30.17 30.17l-60.34-60.34zm-241.359 0l30.17 30.17l-60.34 60.34l-30.17-30.17zM256 139.353c64.422 0 116.647 52.224 116.647 116.647c0 64.422-52.225 116.647-116.647 116.647A116.427 116.427 0 0 1 139.352 256c0-64.423 52.225-116.647 116.648-116.647m0 42.666c-40.859 0-73.981 33.123-73.981 74.062a73.76 73.76 0 0 0 21.603 52.296c13.867 13.867 32.685 21.64 52.378 21.603zm234.666 52.647v42.667h-85.333v-42.667zm-384 0v42.667H21.333v-42.667zM105.15 74.98l60.34 60.34l-30.17 30.17l-60.34-60.34zm301.7 0l30.169 30.17l-60.34 60.34l-30.17-30.17zM277.332 21.333v85.333h-42.667V21.333z"
+                  />
+                </svg>
+              ) : (
+                // 🌙
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M9.37 5.51A7.4 7.4 0 0 0 9.1 7.5c0 4.08 3.32 7.4 7.4 7.4c.68 0 1.35-.09 1.99-.27A7.01 7.01 0 0 1 12 19c-3.86 0-7-3.14-7-7c0-2.93 1.81-5.45 4.37-6.49"
+                    opacity="0.3"
+                  />
+                  <path
+                    fill="currentColor"
+                    d="M9.37 5.51A7.4 7.4 0 0 0 9.1 7.5c0 4.08 3.32 7.4 7.4 7.4c.68 0 1.35-.09 1.99-.27A7.01 7.01 0 0 1 12 19c-3.86 0-7-3.14-7-7c0-2.93 1.81-5.45 4.37-6.49M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26a5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1"
+                  />
+                </svg>
+              )}
             </button>
           </div>
           <p>
@@ -368,7 +409,25 @@ export default function Home() {
                   {repo.homepage && (
                     <div className="repo-website">
                       <a href={repo.homepage} target="_blank" rel="noopener noreferrer">
-                        <span className="website-icon">🌐</span> Demo
+                        <span className="website-icon">
+                          {/* 🌐 */}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M13.5 10.5L21 3m-5 0h5v5m0 6v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"
+                            />
+                          </svg>
+                        </span>{' '}
+                        Demo
                       </a>
                     </div>
                   )}
@@ -387,8 +446,22 @@ export default function Home() {
                       </div>
                     )}
                   </div>
+                  {/* ⭐ */}
                   {repo.stargazers_count > 0 && (
-                    <span className="stars">⭐ {repo.stargazers_count}</span>
+                    <span className="stars">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill="currentColor"
+                          d="m5.825 21l1.625-7.025L2 9.25l7.2-.625L12 2l2.8 6.625l7.2.625l-5.45 4.725L18.175 21L12 17.275z"
+                        />
+                      </svg>
+                      {repo.stargazers_count}
+                    </span>
                   )}
                 </div>
               </div>
@@ -404,7 +477,7 @@ export default function Home() {
       </div>
 
       <footer className="footer">
-        Developed by{' '}
+        2025 Developed by{' '}
         <a href="https://www.linkedin.com/in/1diazdev/" target="_blank" rel="noopener noreferrer">
           Juan Diaz
         </a>
@@ -460,8 +533,28 @@ export default function Home() {
           right: 0;
           background: transparent;
           border: none;
-          font-size: 1.5rem;
           cursor: pointer;
+          padding: 0.5rem;
+          border-radius: 8px;
+          transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #666;
+        }
+
+        .theme-toggle:hover {
+          background-color: #f6f8fa;
+          color: #0366d6;
+        }
+
+        .dark-mode .theme-toggle {
+          color: #e1e5e9;
+        }
+
+        .dark-mode .theme-toggle:hover {
+          background-color: #1f2937;
+          color: #58a6ff;
         }
 
         .header p {
@@ -551,6 +644,9 @@ export default function Home() {
             border-color 0.3s ease;
           position: relative;
           overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          min-height: 200px;
         }
 
         .dark-mode .repo-card {
@@ -633,12 +729,19 @@ export default function Home() {
 
         .website-icon {
           margin-right: 0.25rem;
+          display: inline-flex;
+          align-items: center;
+        }
+
+        .website-icon svg {
+          flex-shrink: 0;
         }
 
         .repo-description {
           margin: 0.5rem 0 1rem;
           color: #586069;
           font-size: 0.9rem;
+          flex: 1;
         }
 
         .dark-mode .repo-description {
@@ -647,18 +750,18 @@ export default function Home() {
 
         .repo-meta {
           display: flex;
-          align-items: center;
+          align-items: flex-end;
           justify-content: space-between;
           font-size: 0.8rem;
           color: #586069;
           margin-top: auto;
+          gap: 1rem;
         }
 
         .repo-meta-left {
           display: flex;
-          align-items: center;
-          gap: 1rem;
-          flex-wrap: wrap;
+          flex-direction: column;
+          gap: 0.5rem;
           flex: 1;
         }
 
@@ -689,6 +792,18 @@ export default function Home() {
           color: #586069;
           white-space: nowrap;
           padding-left: 0.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          font-size: 0.8rem;
+        }
+
+        .dark-mode .stars {
+          color: #a0a0a0;
+        }
+
+        .stars svg {
+          flex-shrink: 0;
         }
 
         .no-results {
