@@ -6,6 +6,8 @@ const GITHUB_USERNAME = 'juanpablodiaz';
 const HIDDEN_PROJECTS = ['unlighthouse', 'googleClone', 'n8n-backup'];
 // Best projects to show at the top (in order of appearance)
 const BEST_PROJECTS = ['countryHub', 'futurama', 'colombia', 'fit', 'favorite'];
+// Featured projects (high priority but not "new")
+const FEATURED_PROJECTS = ['freeForGeeks'];
 
 export default function Home() {
   const [repos, setRepos] = useState([]);
@@ -131,20 +133,31 @@ export default function Home() {
         return new Date(b.created_at) - new Date(a.created_at);
       });
 
-      // Then prioritize best projects
+      // Then prioritize best projects and featured projects
       const sortedRepos = dateRepos.sort((a, b) => {
-        // If a is best but b is not, a comes first
-        if (BEST_PROJECTS.includes(a.name) && !BEST_PROJECTS.includes(b.name)) {
-          return -1;
-        }
-        // If b is best but a is not, b comes first
-        if (!BEST_PROJECTS.includes(a.name) && BEST_PROJECTS.includes(b.name)) {
-          return 1;
-        }
+        const aIsBest = BEST_PROJECTS.includes(a.name);
+        const bIsBest = BEST_PROJECTS.includes(b.name);
+        const aIsFeatured = FEATURED_PROJECTS.includes(a.name);
+        const bIsFeatured = FEATURED_PROJECTS.includes(b.name);
+
+        // Best projects come first
+        if (aIsBest && !bIsBest) return -1;
+        if (!aIsBest && bIsBest) return 1;
+
         // If both are best, sort by their position in the BEST_PROJECTS array
-        if (BEST_PROJECTS.includes(a.name) && BEST_PROJECTS.includes(b.name)) {
+        if (aIsBest && bIsBest) {
           return BEST_PROJECTS.indexOf(a.name) - BEST_PROJECTS.indexOf(b.name);
         }
+
+        // Featured projects come after best projects but before regular ones
+        if (aIsFeatured && !bIsFeatured && !bIsBest) return -1;
+        if (!aIsFeatured && bIsFeatured && !aIsBest) return 1;
+
+        // If both are featured, sort by their position in the FEATURED_PROJECTS array
+        if (aIsFeatured && bIsFeatured) {
+          return FEATURED_PROJECTS.indexOf(a.name) - FEATURED_PROJECTS.indexOf(b.name);
+        }
+
         // Otherwise maintain the date sort order
         return 0;
       });
