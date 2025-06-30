@@ -17,12 +17,13 @@ export default function Home() {
   const technologies = [
     'React',
     'Next.js',
-    'Jekyll',
     'JavaScript',
     'AWS',
     'Astro',
     'TypeScript',
     'TailwindCSS',
+    'API',
+    'Jekyll',
     'HTML',
     'CSS',
   ];
@@ -255,6 +256,15 @@ export default function Home() {
       detectedTechs.push('CSS');
     }
 
+    if (
+      language === 'api' ||
+      topics.includes('api') ||
+      name.includes('api') ||
+      description.includes('api')
+    ) {
+      detectedTechs.push('API');
+    }
+
     return detectedTechs;
   };
 
@@ -278,6 +288,49 @@ export default function Home() {
     );
   };
 
+  const renderDescriptionWithLinks = description => {
+    if (!description) return null;
+
+    // Regex to find URLs (http, https, and www)
+    const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+
+    // Split the text by URLs and map over the parts
+    const parts = description.split(urlRegex);
+
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        // Ensure URL has protocol
+        const url = part.startsWith('www.') ? `https://${part}` : part;
+        // Display text without protocol for cleaner look
+        const displayText = part.replace(/^https?:\/\//, '');
+        return (
+          <a
+            key={index}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: darkMode ? '#4493f8' : '#0969da',
+              textDecoration: 'none',
+              fontWeight: 500,
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={e => {
+              e.target.style.textDecoration = 'underline';
+              e.target.style.color = darkMode ? '#6cb6ff' : '#0550ae';
+            }}
+            onMouseLeave={e => {
+              e.target.style.textDecoration = 'none';
+              e.target.style.color = darkMode ? '#4493f8' : '#0969da';
+            }}
+          >
+            {displayText}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
   if (loading) {
     return (
       <div className="container">
@@ -432,7 +485,9 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-                {repo.description && <p className="repo-description">{repo.description}</p>}
+                {repo.description && (
+                  <p className="repo-description">{renderDescriptionWithLinks(repo.description)}</p>
+                )}
                 <div className="repo-meta">
                   <div className="repo-meta-left">
                     {repo.language && <span className="language">{repo.language}</span>}
